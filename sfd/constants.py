@@ -6,3 +6,5 @@ FONT_SCALE=.5
 KNOWN_COLOR=(0,255,0)
 UNKNOWN_COLOR=(0,0,255)
 NOLABELS_COLOR=(255,0,0)
+
+cv2_colors = {"red":(0,0,255), "green":(0,255,0),"blue": (255,0,0)}

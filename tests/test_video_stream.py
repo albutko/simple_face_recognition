@@ -1,20 +1,30 @@
-import cv2
-from video_stream import VideoStream
+import threading
+import pytest
+import numpy as np
 import time
+from sfd.video_stream import VideoStream
 
-if __name__ == '__main__':
 
-    s = VideoStream()
-    s.start()
-    start_time = time.time()
+def test_thread_starts_on_start():
+    video_stream = VideoStream()
+    start_threads = threading.active_count()
+    video_stream.start()
+    current_threads = threading.active_count()
+    assert start_threads + 1 == current_threads
 
-    while time.time() - start_time < 10:
-       f = s.get_frame()
-       cv2.imshow('frame', f)
-       if cv2.waitKey(1) & 0xFF == ord('q'):
-           break
+def test_gets_new_frame():
+    video_stream = VideoStream()
+    video_stream.start()
+    first_frame = video_stream.read()
+    time.sleep(1)
+    second_frame = video_stream.read()
+    assert not np.array_equal(first_frame, second_frame)
 
-    s.close()
+def test_close_closes_video_capture():
+    video_stream = VideoStream()
+    video_stream.start()
+    video_stream.close()
+    assert not video_stream.isOpened()
 
 
 

@@ -68,6 +68,10 @@ def test_add_label_to_image(color, label, color_image, make_target_image_label, 
     cv2.imshow("p",processed_image)
     np.testing.assert_array_equal(target_image, processed_image)
 
+def test_load_image(shared_datadir):
+    obama = utils.load_image(shared_datadir / "Barack_Obama.jpg")
+    assert type(obama) == np.ndarray
+
 def test_load_known_faces_throws_no_directory():
     with pytest.raises(NotADirectoryError):
         utils.load_known_faces('DIR_DONT_EXIST')

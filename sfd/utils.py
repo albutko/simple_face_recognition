@@ -3,6 +3,7 @@ import glob
 import PIL.Image
 
 import cv2
+import numpy as np
 import face_recognition.api as fr
 import sfd.constants as const
 from sfd.constants import cv2_colors
@@ -26,7 +27,7 @@ def load_known_faces(directory):
         raise NotADirectoryError(f"{directory} is not a directory")
 
     img_files = glob.glob(f'{directory}/*')
-    face_imgs = [_load_image_file(f) for f in img_files]
+    face_imgs = [load_image(f) for f in img_files]
     if len(face_imgs) == 0:
         raise ValueError("No images in directory")
 
@@ -37,7 +38,8 @@ def load_known_faces(directory):
 
     return (names, encodings)
 
-def _load_image_file(image_path):
+def load_image(image_path):
     img = PIL.Image.open(image_path)
     img = img.convert('RGB')
+    img = np.array(img)
     return img
